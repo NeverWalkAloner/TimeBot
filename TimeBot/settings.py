@@ -33,7 +33,7 @@ TGRM_TOKEN = os.environ.get("TGRM_TOKEN")
 GEOCODE_KEY = os.environ.get("GEOCODE_KEY")
 TIMEZONE_KEY = os.environ.get("TIMEZONE_KEY")
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [os.environ.get("ALLOWED_HOST"),]
 
 
 # Application definition
