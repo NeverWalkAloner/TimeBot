@@ -19,9 +19,14 @@ class TimeView(View):
         try:
             city = body['inline_query']['query']
             cur_time = current_time(city)
-            r = 'Текущее время в городе {} - {}'.format(city, cur_time)
+            if cur_time:
+                t = 'Текущее время в {}'.format(city)
+                r = 'Текущее время в городе {} - {}'.format(city, cur_time)
+            else:
+                t = 'Город не найден'
+                r = 'Город не найден'
             query_result = types.InlineQueryResultArticle(id="1",
-                                                          title=r,
+                                                          title=t,
                                                           input_message_content=types.InputTextMessageContent(r))
             self.bot.answer_inline_query(body['inline_query']['id'], [query_result, ])
             return JsonResponse({})
@@ -40,8 +45,8 @@ class TimeView(View):
             if cur_time:
                 self.bot.send_message(chat_id, 'Текущее время в городе {} - {}'.format(city, cur_time))
             else:
-                self.bot.send_message(chat_id, """Город не найден. Попробуйте уточнить запрос указав страну.
-                Например: Чирчик, Узбекистан""")
+                self.bot.send_message(chat_id, "Город не найден. Попробуйте уточнить запрос указав страну.\
+                Например: Чирчик, Узбекистан")
         return JsonResponse({})
 
     @csrf_exempt
