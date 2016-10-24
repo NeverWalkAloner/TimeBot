@@ -6,6 +6,7 @@ from .generic import *
 from django.conf import settings
 import json
 import telebot
+from telebot import types
 
 
 # Create your views here.
@@ -16,7 +17,14 @@ class TimeView(View):
         test = request.body.decode('utf-8')
         body = json.loads(test)
         try:
-            city = body['query']
+            city = body['inline_query']['query']
+            cur_time = current_time(city)
+            r = 'Текущее время в городе {} - {}'.format(city, cur_time)
+            query_result = types.InlineQueryResultArticle(id="1",
+                                                          title=r,
+                                                          input_message_content=types.InputTextMessageContent(r))
+            self.bot.answer_inline_query(body['inline_query']['id'], [query_result, ])
+            return JsonResponse({})
         except KeyError:
             city = body['message']['text']
         chat_id = body['message']['chat']['id']
