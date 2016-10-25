@@ -26,7 +26,9 @@ def current_time(city):
                   'sensor': False}
         url = 'https://maps.googleapis.com/maps/api/timezone/json?{}'.format(urllib.parse.urlencode(params))
         result = request(url)
-        local_time = datetime.datetime.utcnow() + datetime.timedelta(seconds=result['rawOffset'])
+        local_time = datetime.datetime.utcnow() + \
+                     datetime.timedelta(seconds=result['rawOffset']) + \
+                     datetime.timedelta(seconds=result['dstOffset'])
         return str(local_time)[:-7]
     except IndexError:
         return None
